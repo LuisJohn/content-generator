@@ -7,11 +7,9 @@ export async function POST(req: Request) {
     try {
         const { userId } = auth()
         if(!userId){ 
-            return new NextResponse('User not found', { status:401 })
+            return new NextResponse('User not found', { status: 401 })
         }
-
         const {title, description, templateUsed } = await req.json()
-
         const createNewDoc = await db.aiOutput.create({
             data: {
                 userId: userId,
@@ -20,7 +18,6 @@ export async function POST(req: Request) {
                 templateUsed,
             }
         })
-
         revalidatePath('/')
         return  NextResponse.json(createNewDoc, { status: 201 })
     } catch (err) {
