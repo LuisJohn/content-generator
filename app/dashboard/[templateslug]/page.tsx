@@ -9,6 +9,7 @@ import { useParams } from 'next/navigation';
 import { useState } from 'react';
 import Editor from './_components/editor';
 import { chatSession } from '@/lib/gemini-ai';
+import axios from 'axios';
 
 
 interface templateSlugProps {
@@ -39,6 +40,13 @@ const TemplatePage = ({ params }: {params: {}}) => {
 
       const result = await chatSession.sendMessage(finalPromptAI)
       setAiOutput(result.response.text());
+
+      const response = await axios.post('/api/', {
+        title: dataSet.title,
+        description: result.response.text(),
+        templateUsed: selectedTemplate?.name
+      })
+
       setIsLoading(false)
 
     } catch (err) {
