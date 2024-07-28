@@ -41,7 +41,7 @@ const TemplatePage = ({ params }: {params: {}}) => {
       const result = await chatSession.sendMessage(finalPromptAI)
       setAiOutput(result.response.text());
 
-      const response = await axios.post('/api/', {
+      const response = await axios.post('/api', {
         title: dataSet.title,
         description: result.response.text(),
         templateUsed: selectedTemplate?.name

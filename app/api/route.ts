@@ -3,7 +3,7 @@ import { auth } from "@clerk/nextjs/server"
 import { revalidatePath } from "next/cache"
 import { NextResponse } from "next/server"
 
-export const POST = async (req: Request) => {
+export async function POST(req: Request) {
     try {
         const { userId } = auth()
         if(!userId){ 
@@ -12,7 +12,7 @@ export const POST = async (req: Request) => {
 
         const {title, description, templateUsed } = await req.json()
 
-        const createNewOutput = await db.aiOutput.create({
+        const createNewDoc = await db.aiOutput.create({
             data: {
                 userId: userId,
                 title: title,
@@ -22,8 +22,8 @@ export const POST = async (req: Request) => {
         })
 
         revalidatePath('/')
-        return NextResponse.json(createNewOutput), { status: 201 }
+        return  NextResponse.json(createNewDoc, { status: 201 })
     } catch (err) {
-        return new NextResponse('AI GENERATED: Error AI Geneerated',  {status: 500})
+        return new NextResponse('AI GENERATED: Error AI Generated',  {status: 500})
     }
 }
